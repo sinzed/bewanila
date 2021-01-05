@@ -4,9 +4,7 @@
   "description": "Enter working hours ",
   "main": "index.js",
   "scripts": {
-    "worktime": "./node_modules/mocha/bin/mocha --timeout=30000 --grep \"correctingFilter\" ./tasks",
-    "worktimeIn": "./node_modules/mocha/bin/mocha --timeout=30000 --grep \"comeInFilter\" ./tasks",
-    "worktimeOut": "./node_modules/mocha/bin/mocha --timeout=30000 --grep \"goOutFilter\" ./tasks"
+    "worktime": "./node_modules/mocha/bin/mocha --timeout=30000 ./tasks"
   },
   "author": "saeed",
   "license": "ISC",
