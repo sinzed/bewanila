@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer')
+const fs = require('fs').promises;
 const config = require('../config/config')
 
 describe('add working hours not because you are lazy but because you have something more important to do', ()=>{
@@ -22,12 +23,30 @@ describe('add working hours not because you are lazy but because you have someth
                 ]
               });
             const page = await browser.newPage()
-            await page.goto(config.url)
+            try {
+              const cookiesString = await fs.readFile('./cookies.json');
+              const cookies = JSON.parse(cookiesString);
+              await page.setCookie(...cookies);
+            }
+            catch(ex){
+              console.warn(ex);
+              await page.goto(config.externalUrlForTimeCorrection)
+              await page.waitForTimeout(2000)
+              await page.type('#i0116', config.email)
+              await page.click('#idSIButton9')
+              await page.waitForTimeout(2000)
+              await page.type('#i0118', config.accountPass)
+              await page.click('#idSIButton9')
+              await page.waitForTimeout(12000)
+              const cookies = await page.cookies();
+              await fs.writeFile('./cookies.json', JSON.stringify(cookies, null, 2));
+            }
+            await page.goto(config.externalUrlForTimeCorrection)
             await page.type('#txtUser', config.username)
             await page.type('#txtPassword', config.password)
             await page.click("#btnLogin")
-            page.waitForTimeout(5000)
-            await page.waitForNavigation()
+            await page.waitForNavigation() 
+            await page.waitForTimeout(5000)
             const frame = await page.frames().find(frame => frame.name() === 'Stage');
             await frame.evaluate(() => {
                 const trs = Array.from(document.querySelectorAll('table#SectionGrid_Zeitkorrekturen1_SectionNA_DgNormabweichungen tbody tr'))

@@ -22,7 +22,24 @@ describe('add working hours not because you are lazy but because you have someth
                 ]
               });
             const page = await browser.newPage()
-            // await page.goto(config.url)
+            try {
+              const cookiesString = await fs.readFile('./cookies.json');
+              const cookies = JSON.parse(cookiesString);
+              await page.setCookie(...cookies);
+            }
+            catch(ex){
+              console.warn(ex);
+              await page.goto(config.externalUrl)
+              await page.waitForTimeout(2000)
+              await page.type('#i0116', config.email)
+              await page.click('#idSIButton9')
+              await page.waitForTimeout(2000)
+              await page.type('#i0118', config.accountPass)
+              await page.click('#idSIButton9')
+              await page.waitForTimeout(12000)
+              const cookies = await page.cookies();
+              await fs.writeFile('./cookies.json', JSON.stringify(cookies, null, 2));
+            }
             await page.goto("https://alinaweb/Webterminal/")
             await page.type('#txtUser', config.username)
             await page.type('#txtPassword', config.password)
@@ -36,10 +53,10 @@ describe('add working hours not because you are lazy but because you have someth
             })
             await page.waitForTimeout(2000)
             const frameStage = await page.frames().find(frame => frame.name() === 'Stage');
-            await frameStage.evaluate(() => {
-                const okBtn = Array.from(document.querySelectorAll('a#Stempelung1_StempelSection_btnOk'))
-                okBtn[0].click();
-            })
-            browser.close()
+            // await frameStage.evaluate(() => {
+            //     const okBtn = Array.from(document.querySelectorAll('a#Stempelung1_StempelSection_btnOk'))
+            //     okBtn[0].click();
+            // })
+            // browser.close()
     })
 })
