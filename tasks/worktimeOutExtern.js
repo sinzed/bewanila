@@ -38,7 +38,11 @@ describe('add working hours not because you are lazy but because you have someth
               await page.waitForTimeout(2000)
               await page.type('#i0118', config.accountPass)
               await page.click('#idSIButton9')
-              await page.waitForTimeout(12000)
+              await page.waitForSelector('#idChkBx_SAOTCAS_TD')
+              await page.click("#idChkBx_SAOTCAS_TD")
+              await page.waitForSelector('#idBtn_Back')
+              await page.click('#idBtn_Back')
+              await page.waitForSelector('#txtUser')
               const cookies = await page.cookies();
               await fs.writeFile('./cookies.json', JSON.stringify(cookies, null, 2));
             }
