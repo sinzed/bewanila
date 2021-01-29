@@ -47,6 +47,7 @@ describe('add working hours not because you are lazy but because you have someth
               await fs.writeFile('./cookies.json', JSON.stringify(cookies, null, 2));
             }
             await page.goto(config.externalUrl)
+            await page.waitForSelector('#txtUser')
             await page.type('#txtUser', config.username)
             await page.type('#txtPassword', config.password)
             await page.click("#btnLogin")
@@ -61,7 +62,7 @@ describe('add working hours not because you are lazy but because you have someth
             const frameStage = await page.frames().find(frame => frame.name() === 'Stage');
             await frameStage.evaluate(() => {
                 const okBtn = Array.from(document.querySelectorAll('a#Stempelung1_StempelSection_btnOk'))
-                okBtn[0].click();
+                // okBtn[0].click();
             })
     })
 })
