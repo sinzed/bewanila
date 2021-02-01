@@ -47,7 +47,7 @@ describe('add working hours not because you are lazy but because you have someth
               await fs.writeFile('./cookies.json', JSON.stringify(cookies, null, 2));
             }
             await page.goto(config.externalUrl)
-            await page.waitForSelector('#txtUser')
+            await page.waitForTimeout(5000)
             await page.type('#txtUser', config.username)
             await page.type('#txtPassword', config.password)
             await page.click("#btnLogin")
